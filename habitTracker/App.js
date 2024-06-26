@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, Platform, Pressable, Keyboard  } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, Platform, Pressable, Keyboard } from 'react-native';
 import Task from './components/Task';
+import Navbar from './components/Navbar';
 
 export default function App() {
   const [task, setTask] = useState('');
@@ -23,6 +24,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <Navbar />
       {/* Today's Tasks */}
       <View style={styles.tasksWrapper}>
         <Text style={styles.sectionTitle}>Today's tasks</Text>
@@ -30,9 +32,9 @@ export default function App() {
           {
             taskItems.map((item, index) => {
               return (
-                <Pressable 
-                  key={index} 
-                  onPress={() => completeTask(index)} 
+                <Pressable
+                  key={index}
+                  onPress={() => completeTask(index)}
                 >
                   <Task text={item.text} completed={item.completed} />
                 </Pressable>
