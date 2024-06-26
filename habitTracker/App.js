@@ -39,7 +39,7 @@ export default function App() {
       <View style={styles.main}>
         {selectedPage === 'Habits' ? (
           <View style={styles.tasksWrapper}>
-            <Text style={styles.sectionTitle}>Today's tasks</Text>
+            <Text style={styles.sectionTitle}>Add a new habit</Text>
             <FlatList
               data={taskItems}
               renderItem={({ item, index }) => (
@@ -74,7 +74,7 @@ export default function App() {
         >
           <TextInput
             style={styles.input}
-            placeholder={'Write a task'}
+            placeholder={'Write new habit'}
             value={task}
             onChangeText={text => setTask(text)}
           />
