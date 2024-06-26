@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, Platform, Pressable, Keyboard } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, Platform, Pressable, Keyboard, FlatList } from 'react-native';
 import Task from './components/Task';
 import Navbar from './components/Navbar';
 
 export default function App() {
   const [task, setTask] = useState('');
   const [taskItems, setTaskItems] = useState([]);
+  const [selectedPage, setSelectedPage] = useState('Habits'); // State to track selected page
 
   const handleAddTask = () => {
     Keyboard.dismiss();
@@ -22,46 +23,56 @@ export default function App() {
     setTaskItems(itemsCopy);
   };
 
+  const handleNavbarItemPress = (page) => {
+    setSelectedPage(page);
+  };
+
   return (
     <View style={styles.container}>
-      <Navbar />
-      {/* Today's Tasks */}
-      <View style={styles.tasksWrapper}>
-        <Text style={styles.sectionTitle}>Today's tasks</Text>
-        <View style={styles.items}>
-          {
-            taskItems.map((item, index) => {
-              return (
-                <Pressable
-                  key={index}
-                  onPress={() => completeTask(index)}
-                >
+   
+    
+      <View style={styles.main}>
+        
+      <Navbar onItemPress={handleNavbarItemPress} />
+        {selectedPage === 'Habits' ? (
+          <View style={styles.tasksWrapper}>
+            <Text style={styles.sectionTitle}>Today's tasks</Text>
+            <FlatList
+              data={taskItems}
+              renderItem={({ item, index }) => (
+                <Pressable onPress={() => completeTask(index)}>
                   <Task text={item.text} completed={item.completed} />
                 </Pressable>
-              );
-            })
-          }
-        </View>
-      </View>
-
-      {/* Write a task */}
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.writeTaskWrapper}
-      >
-        <TextInput
-          style={styles.input}
-          placeholder={'Write a task'}
-          value={task}
-          onChangeText={text => setTask(text)}
-        />
-
-        <Pressable onPress={handleAddTask}>
-          <View style={styles.addWrapper}>
-            <Text style={styles.addText}>+</Text>
+              )}
+              keyExtractor={(item, index) => index.toString()}
+              contentContainerStyle={styles.items}
+            />
           </View>
-        </Pressable>
-      </KeyboardAvoidingView>
+        ) : (
+          <View style={styles.tasksWrapper}>
+            <Text style={styles.sectionTitle}>{selectedPage}</Text>
+            {/* Add content for other pages here */}
+          </View>
+        )}
+      </View>
+      {selectedPage === 'Habits' && (
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.writeTaskWrapper}
+        >
+          <TextInput
+            style={styles.input}
+            placeholder={'Write a task'}
+            value={task}
+            onChangeText={text => setTask(text)}
+          />
+          <Pressable onPress={handleAddTask}>
+            <View style={styles.addWrapper}>
+              <Text style={styles.addText}>+</Text>
+            </View>
+          </Pressable>
+        </KeyboardAvoidingView>
+      )}
     </View>
   );
 }
@@ -69,11 +80,16 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'row', // Arrange children in a row
     backgroundColor: '#E8EAED',
+  },
+  main: {
+    flex: 1,
+    padding: 20,
   },
   tasksWrapper: {
     paddingTop: 80,
-    paddingHorizontal: 20,
+    flex: 1,
   },
   sectionTitle: {
     fontSize: 24,
@@ -81,6 +97,7 @@ const styles = StyleSheet.create({
   },
   items: {
     marginTop: 30,
+    paddingBottom: 100,
   },
   writeTaskWrapper: {
     position: 'absolute',

@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 
-const Navbar = () => {
+const Navbar = ({ onItemPress }) => {
   const data = [
     { key: 'Habits' },
     { key: 'Habit Tracker' },
@@ -11,12 +11,14 @@ const Navbar = () => {
   return (
     <View style={styles.container}>
       <FlatList
-        horizontal
+      horizontal
         data={data}
         renderItem={({ item }) => (
-          <View style={styles.item}>
-            <Text style={styles.itemText}>{item.key}</Text>
-          </View>
+          <TouchableOpacity onPress={() => onItemPress(item.key)}>
+            <View style={styles.item}>
+              <Text style={styles.itemText}>{item.key}</Text>
+            </View>
+          </TouchableOpacity>
         )}
         keyExtractor={item => item.key}
         showsVerticalScrollIndicator={false}
@@ -27,17 +29,17 @@ const Navbar = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
-    backgroundColor: '#000000',
+    backgroundColor: '#004363',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   item: {
-    backgroundColor: '#FF5F94',
+    backgroundColor: '#0087C8',
     padding: 10,
     borderRadius: 10,
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 10,
+    marginBottom: 10,
   },
   itemText: {
     color: '#FFF',

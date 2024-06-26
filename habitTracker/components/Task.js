@@ -31,12 +31,12 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderWidth: 2,
-    borderColor: '#FF5F94',
+    borderColor: '#0087C8',
     borderRadius: 5,
     marginRight: 15,
   },
   completedSquare: {
-    backgroundColor: '#FF5F94', // Blue color when completed
+    backgroundColor: '#0087C8', // Blue color when completed
   },
   itemText: {
     maxWidth: '80%',
