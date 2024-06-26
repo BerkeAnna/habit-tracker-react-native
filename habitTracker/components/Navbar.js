@@ -5,13 +5,12 @@ const Navbar = ({ onItemPress }) => {
   const data = [
     { key: 'Habits' },
     { key: 'Habit Tracker' },
-    // Add more items here
   ];
 
   return (
     <View style={styles.container}>
       <FlatList
-      horizontal
+        horizontal
         data={data}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => onItemPress(item.key)}>
@@ -24,14 +23,14 @@ const Navbar = ({ onItemPress }) => {
         showsVerticalScrollIndicator={false}
       />
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#004363',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   item: {
     backgroundColor: '#0087C8',
@@ -40,6 +39,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 10,
+    marginHorizontal: 5,
   },
   itemText: {
     color: '#FFF',

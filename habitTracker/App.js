@@ -7,7 +7,7 @@ import Navbar from './components/Navbar';
 export default function App() {
   const [task, setTask] = useState('');
   const [taskItems, setTaskItems] = useState([]);
-  const [selectedPage, setSelectedPage] = useState('Habits'); // State to track selected page
+  const [selectedPage, setSelectedPage] = useState('Habits');
 
   const handleAddTask = () => {
     Keyboard.dismiss();
@@ -19,7 +19,13 @@ export default function App() {
 
   const completeTask = (index) => {
     let itemsCopy = [...taskItems];
-    itemsCopy[index].completed = true;
+    itemsCopy[index].completed = !itemsCopy[index].completed;
+    setTaskItems(itemsCopy);
+  };
+
+  const deleteTask = (index) => {
+    let itemsCopy = [...taskItems];
+    itemsCopy.splice(index, 1);
     setTaskItems(itemsCopy);
   };
 
@@ -29,18 +35,15 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-   
-    
-      <View style={styles.main}>
-        
       <Navbar onItemPress={handleNavbarItemPress} />
+      <View style={styles.main}>
         {selectedPage === 'Habits' ? (
           <View style={styles.tasksWrapper}>
             <Text style={styles.sectionTitle}>Today's tasks</Text>
             <FlatList
               data={taskItems}
               renderItem={({ item, index }) => (
-                <Pressable onPress={() => completeTask(index)}>
+                <Pressable onPress={() => deleteTask(index)}>
                   <Task text={item.text} completed={item.completed} />
                 </Pressable>
               )}
@@ -51,7 +54,16 @@ export default function App() {
         ) : (
           <View style={styles.tasksWrapper}>
             <Text style={styles.sectionTitle}>{selectedPage}</Text>
-            {/* Add content for other pages here */}
+            <FlatList
+              data={taskItems}
+              renderItem={({ item, index }) => (
+                <Pressable onPress={() => completeTask(index)}>
+                  <Task text={item.text} completed={item.completed} />
+                </Pressable>
+              )}
+              keyExtractor={(item, index) => index.toString()}
+              contentContainerStyle={styles.items}
+            />
           </View>
         )}
       </View>
@@ -80,7 +92,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row', // Arrange children in a row
     backgroundColor: '#E8EAED',
   },
   main: {
